@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page de Paiement</title>
+    <style>
+/* Styles généraux */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+h2, h3 {
+    color: #2c3e50;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+/* Conteneur principal */
+.payment-form {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.payment-form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+/* Formulaire */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #34495e;
+}
+
+.form-group input, 
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #dcdcdc;
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: #f9f9f9;
+}
+
+.form-group input:focus, 
+.form-group select:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
+/* Bouton */
+.btn {
+    display: inline-block;
+    width: 100%;
+    padding: 12px;
+    background-color: #3498db;
+    color: #ffffff;
+    font-size: 16px;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #2980b9;
+}
+
+.btn a {
+    color: #ffffff;
+}
+
+/* Message de remerciement */
+.thank-you-message {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #ecf9ec;
+    border: 1px solid #27ae60;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.thank-you-message h3 {
+    color: #27ae60;
+    margin-bottom: 10px;
+}
+
+/* Résumé de commande */
+.order-summary {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 15px;
+    background-color: #fdfdfd;
+    border: 1px solid #dcdcdc;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.order-summary .item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.order-summary .total {
+    font-weight: bold;
+    color: #e74c3c;
+}
+    </style>
+</head>
+<body>
+
+    <!-- Formulaire de paiement -->
+    <div class="payment-form" id="paymentForm">
+        <h2>Informations de paiement</h2>
+
+        <form id="paymentFormData">
+            <div class="form-group">
+                <label for="email">Email ou numéro de téléphone</label>
+                <input type="text" id="email" placeholder="Entrez votre email ou numéro de téléphone" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="name">Nom complet</label>
+                <input type="text" id="name" placeholder="Entrez votre nom complet" required>
+            </div>
+
+            <div class="form-group">
+                <label for="address">Adresse</label>
+                <input type="text" id="address" placeholder="Entrez votre adresse complète" required>
+            </div>
+
+            <div class="form-group">
+                <label for="city">Ville</label>
+                <input type="text" id="city" placeholder="Entrez votre ville" required>
+            </div>
+
+            <div class="form-group">
+                <label for="postalCode">Code postal</label>
+                <input type="text" id="postalCode" placeholder="Entrez votre code postal" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Numéro de téléphone</label>
+                <input type="text" id="phone" placeholder="Entrez votre numéro de téléphone" required>
+            </div>
+
+            <div class="form-group">
+                <label for="paymentMethod">Méthode de paiement</label>
+                <select id="paymentMethod" required>
+                    <option value="creditCard">Carte de crédit</option>
+                    <!-- Plus de méthodes de paiement peuvent être ajoutées ici -->
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="cardNumber">Numéro de carte</label>
+                <input type="text" id="cardNumber" placeholder="Entrez le numéro de votre carte" required>
+            </div>
+
+            <button class="btn" type="submit">Finaliser le paiement</button>
+        </form>
+    </div>
+
+    <!-- Message de remerciement -->
+    <div class="thank-you-message" id="thankYouMessage" style="display: none;">
+        <h3>Merci pour votre achat !</h3>
+        <p>Votre commande a été reçue et est en cours de traitement.</p>
+        
+            <button class="btn"> <a href="index.html"></a>Retour à l'accueil  </a></button>
+       
+    </div>
+
+    <div class="order-summary">
+        <h3>Résumé de la commande</h3>
+        <div class="item">
+            <span>Total</span>
+            <span class="total" id="orderTotal"></span>
+        </div>
+    </div>
+
+    <script>
+        // Affichage du montant total sur la page de paiement
+        window.onload = function() {
+            let totalAmount = localStorage.getItem('totalAmount');
+            document.getElementById('orderTotal').textContent = totalAmount + ' MAD';
+        };
+
+        // Fonction pour soumettre le formulaire et afficher le message de remerciement
+        document.getElementById('paymentFormData').addEventListener('submit', function(event) {
+            event.preventDefault(); // Empêche la soumission par défaut
+
+            // Cache le formulaire et affiche le message de remerciement
+            document.getElementById('paymentForm').style.display = 'none';
+            document.getElementById('thankYouMessage').style.display = 'block';
+        });
+    </script>
+
+</body>
+</html>
